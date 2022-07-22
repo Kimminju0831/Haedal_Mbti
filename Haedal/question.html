@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="style_question.css" rel="stylesheet" type="text/css" />
+    <title>Question</title>
+</head>
+
+<body>
+    <div id="test" class="container">
+        <div class="row">
+            <div class="col-12">
+                <p id="number" class="mt-5"></p>
+                <h2 id="mymbti" class="mt-5">진행 상황</h2>
+                <br>
+                <div class="progress">
+                    <div id="progress" class="progress-bar bg-success" role="progressbar" aria-valuenow=""
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <h2 id="mymbti" class="mt-5">해달 MBTI</h2>
+                <h3 id="title" class="mt-5">튜토리얼</h3>
+                <br>
+                <h5 id="description" class="mt-3">예시문을 읽고<br>나와 관련있는 쪽을<br>선택해주세요.</h5>
+                <br>
+                <input type="hidden" id="score" value="0">
+                <div class="grid">
+                    <button id="A" class="btn" type="button">고양이 파</button>
+                    <button id="B" class="btn" type="button">강아지 파</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="IO" value="0">
+    <input type="hidden" id="GF" value="0">
+    <input type="hidden" id="CR" value="0">
+    <input type="hidden" id="result_mbti" value="0">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <script>
+        var i = 0;
+
+        var testNum = {
+            1: { "title": "Question 1", "type": "GF", "description": "내가 지향하는 스타일은?", "A": "검색 안하고도 척척! <br>천재형 개발자", "B": "차근차근 하나씩 성장! <br>노력형 개발자" },
+
+            2: { "title": "Question 2", "type": "IO", "description": "내가 여가 시간을 보내는 방법은,", "A": "몰라몰라~<br> 집에 콕 틀어박힐래.", "B": "이때다! 조금이라도<br> 나가서 움직일래." },
+
+            3: { "title": "Question 3", "type": "CR", "description": "한 가지 일을 할 수 있다면,", "A": "사람들과 어울려서<br> 프로젝트하기!", "B": "코딩 테스트를 위해<br> 백준 풀기!" },
+
+            4: { "title": "Question 4", "type": "GF", "description": "모르는 문제가 생겼다면, 나는?", "A": "선배님 ~ 친구야 ~<br> 아는 사람을 총동원!", "B": "혼자 끙끙 매달려본다!<br> 스택 오버플로우만이<br> 나의 친구." },
+
+            5: { "title": "Question 5", "type": "IO", "description": "주말에 나오라는 친구의 연락!", "A": "주말에 무슨 약속이야~ <br>모른 척 한다.", "B": "어라? 집 앞이라고? <br>그럼 가야지." },
+
+            6: { "title": "Question 6", "type": "CR", "description": "160cm의 바퀴벌레 ( 이름 : 그레고리 )와 <br>같이 목욕하고 한 달 살기, 단 100억을 줌", "A": "같은 욕조에 <br>들어가야 하나요?", "B": "그런 일 안 생김!!" },
+
+            7: { "title": "Question 7", "type": "GF", "description": "새로운 스마트 워치가 나왔다!", "A": "신제품!?<br> 당장 구매해.", "B": "새로 나온 건<br> 만지기가 어려워.<br>맛있는 거나 사 먹자." },
+
+            8: { "title": "Question 8", "type": "CR", "description": "노트북을 보면?", "A": "조개와 닮았네ㅎㅎ", "B": "맥북이 떠오르는데?" },
+
+            9: { "title": "Question 9", "type": "IO", "description": "서울에 놀러간다면?", "A": "호텔 풀장에서<br> 수영 좀 하다가<br> 낮잠자기!", "B": "한강 공원 산책하고<br> 돌아다니기!" },
+
+        }
+
+        var result = {
+            "IGC": { "mbti": "매기", "explain": "매기 설명", "img": "character/mg.png" },
+            "IGR": { "mbti": "사스미", "explain": "사스미 설명", "img": "" },
+            "OGC": { "mbti": "해달", "explain": "해달 설명", "img": "" },
+            "OGR": { "mbti": "김두근", "explain": "김두근 설명", "img": "" },
+            "IFC": { "mbti": "아리", "explain": "아리 설명", "img": "" },
+            "IFR": { "mbti": "부기", "explain": "부기 설명", "img": "" },
+            "OFC": { "mbti": "흐규", "explain": "흐규 설명", "img": "" },
+            "OFR": { "mbti": "스팸", "explain": "스팸 설명", "img": "" }
+        }
+
+        //테스트 시작함수
+        var testStart = function () {
+
+            document.querySelector('#main').style.display = "none";
+            document.querySelector('#test').style.display = "block";
+            next();
+        }
+
+        //타입 선택을 위한 함수
+        document.querySelector('#A').addEventListener('click', function () {
+
+            if (i > 0) {
+                console.log(i);
+                console.log(testNum[i]['type']);
+                if (testNum[i]['type'] == "IO") {
+                    document.querySelector('#IO').value = document.querySelector('#IO').value + 1;
+                }
+
+                if (testNum[i]['type'] == "GF") {
+                    document.querySelector('#GF').value = document.querySelector('#GF').value + 1;
+                }
+
+                if (testNum[i]['type'] == "CR") {
+                    document.querySelector('#CR').value = document.querySelector('#CR').value + 1;
+                }
+            }
+            next();
+        })
+
+        document.querySelector('#B').addEventListener('click', function () {
+            next();
+        })
+
+        //문제 넘기기 + 결과 도출 함수
+        var next = function () {
+            if (i >= 9) {
+                document.querySelector('#test').style.display = "none";
+                var mbti = '';
+                if (document.querySelector('#IO').value >= 2) {
+                    mbti += 'I';
+                } else {
+                    mbti += 'O';
+                }
+                if (document.querySelector('#GF').value >= 2) {
+                    mbti += 'G';
+                } else {
+                    mbti += 'F';
+                }
+                if (document.querySelector('#CR').value >= 2) {
+                    mbti += 'C';
+                } else {
+                    mbti += 'R';
+                }
+                console.log(mbti);
+                localStorage.setItem('mbti', mbti);
+                location.href = 'result.html';
+            }
+            else {
+                i++;
+                if (i > 0) {
+                    document.querySelector('#number').innerHTML = i + '/9';
+                    document.querySelector('#progress').style.width = (i / 9) * 100 + '%';
+                    document.querySelector('#title').innerHTML = testNum[i]['title'];
+                    document.querySelector('#description').innerHTML = testNum[i]['description'];
+                    document.querySelector('#A').innerHTML = testNum[i]['A'];
+                    document.querySelector('#B').innerHTML = testNum[i]['B'];
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
